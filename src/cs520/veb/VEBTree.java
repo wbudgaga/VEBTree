@@ -3,78 +3,141 @@ package cs520.veb;
 // Precondition: leftEnd >= 2
 
 public class VEBTree extends Heap{
-	private final int 	BASECASE_SIZE = 3; 	// Base case constant.  You can change it as you like. 
-							// You can make it big as VEBtree size. In this case we will deal only with naive heap
-	
-	private NaiveHeap	sideHeap; 		// the sideHeap is defined as NaiveHeap so we can use the methods there
+	// base case constant you change as you like.
+	private final int 	BASECASE_SIZE = 3; 	 
+										
+	private Heap		sideHeap; 			
 	private Heap 		heap[];
 	
 	public VEBTree(int left, int right){
 		super(left,right);
-		int subtreeSize 	= subtreeRange(); 					// size   of subtrees 
-		int numberOfSubtrees	= rootDegree();   					// number of subtrees
-		sideHeap 		= new NaiveHeap(0,numberOfSubtrees);
-		heap 			= new Heap[numberOfSubtrees];				// the heap can be VEBTree or Naive heap(in case of base case)
+		int subtreeSize 	= subtreeRange(); 	// size   of subtrees 
+		int numberOfSubtrees= rootDegree();   	// number of subtrees
+		// the heap and sideHeap can be VEBTree or Naive heap
+		if (isBaseCase(0,numberOfSubtrees-1))
+			sideHeap= new NaiveHeap(0,numberOfSubtrees-1);
+		else
+			sideHeap= new VEBTree(0,numberOfSubtrees-1);
+		
+		heap 		= new Heap[numberOfSubtrees];						
 			
 		// creating of child heaps
 		for (int i = 0; i < numberOfSubtrees ; ++i){
-			int l 	= getLeftEnd() + i * subtreeSize; 				// calculate left range
+			// calculate left range
+			int l 	= getLeftEnd() + i * subtreeSize; 	
+			// calculate right range
 			int r 	= (i == numberOfSubtrees -1)? getRightEnd(): 
-				   getLeftEnd() + (i+1) * subtreeSize - 1; 			// calculate right range
-			heap[i] = isBaseCase(l,r)? new NaiveHeap(l, r): new VEBTree(l,r);	// the heap can be VEBTree or Naive heap
+						getLeftEnd() + (i+1) * subtreeSize - 1; 				
+			heap[i] = isBaseCase(l,r)? new NaiveHeap(l, r): new VEBTree(l,r);
 		}
 	}
-
+	
+	private int swapMin(int newMin){
+		int oldMin = findMin();
+		setMin(newMin);
+		return oldMin;
+	}
+	
 	@Override
 	public boolean insert(int x){
-		if (!inRange(x))
+		if (!inRange(x) || x== findMin())
 			return false;
-
-		int arrayIndex = getActualIndex(x);
-		if (isEmpty() || x < findMin())
-			setMin(arrayIndex);
+		
+		if (isEmpty())
+			return insertEmpty(x);
+		
+		boolean result = false;
+		if (x < findMin())
+			x = swapMin(x);
 		
 		int bucketIndex = subtreeBucket(x);
-		sideHeap.insert(bucketIndex);
-		return heap[bucketIndex].insert(x);
+		
+		if (heap[bucketIndex].isEmpty()){
+			sideHeap.insert(bucketIndex);
+			result = heap[bucketIndex].insertEmpty(x);
+		}else 
+			if (heap[bucketIndex].findMin()!= x)
+				result = heap[bucketIndex].insert(x);
+					
+		if (result && x>findMax())
+			setMax(x);
+		return result;
 	}
 	
 	@Override
-	public int deleteMin() {
-		int bucketIndex 	= subtreeBucket(findMin());
-		int nextMin 		= heap[bucketIndex].deleteMin();
-		
-		if (nextMin == -1){
-			int nextBucket 	= sideHeap.deleteMin();
-			if(nextBucket != -1)
-				nextMin = heap[nextBucket].findMin();
+	public void deleteMin() {
+		if (getMinIndex()== getMaxIndex())
+			setMaxIndex(-1);
+		setMinIndex(-1);
+		int firstNoneEmptyCluster = sideHeap.findMin();
+		if (firstNoneEmptyCluster ==-1 ){
+			setMinIndex(getMaxIndex());
+			return;
 		}
-		
-		if (nextMin == -1){
-			setMin(-1);
-		}else
-			setMin(getActualIndex(nextMin));
-		
-		return findMin();
+		setMin(heap[firstNoneEmptyCluster].findMin());
+		//If heap becomes empty after deleteMin then this recurrence takes O(1)
+		heap[firstNoneEmptyCluster].deleteMin();
+
+		//The second recurrence is executed only if the cluster becomes empty,
+		if (heap[firstNoneEmptyCluster].isEmpty()){
+			heap[firstNoneEmptyCluster].setMinIndex(heap[firstNoneEmptyCluster].getMaxIndex());
+			if (heap[firstNoneEmptyCluster].isEmpty())
+				sideHeap.deleteMin();
+		}
 	}
+
+	@Override
+	public int findNext(int value) {
+		if (value < findMin())
+			return findMin();
+		if (value >= findMax())
+			return -1;
+		
+		int valueBucket = subtreeBucket(value);
+		
+		int minInHisBucket = heap[valueBucket].findMin();
+		int maxInHisBucket = heap[valueBucket].findMax();
+		
+		if (value < minInHisBucket)
+			return minInHisBucket;
+		
+		if (value < maxInHisBucket)
+			return  heap[valueBucket].findNext(value);	
+		else{
+			int nextBucket = sideHeap.findNext(valueBucket);
+			if (nextBucket!=-1)
+				return heap[nextBucket].findMin();
+			else
+				return findMax();
+		}	
+	}
+
 	
 	public void printSideHeap(){
-		sideHeap.printContents();
+		if (isEmpty())
+			return;
+		int i = subtreeBucket(findMin());
+		System.out.println(i);
+		for (++i; i < rootDegree() && i!=-1; ++i)
+			if (!heap[i].isEmpty())
+				System.out.println(i);
+
 	}
 		
 	public void printContents(){
 		if (isEmpty())
 			return;
-		for (int i = sideHeap.findMin(); i < rootDegree(); ++i)
-			if (sideHeap.get(i)==1)
+		System.out.println(findMin());
+		for (int i = 0; i < rootDegree() && i!=-1; ++i)
 				heap[i].printContents();
 	}
-		
+
 	private boolean isBaseCase(int l, int r){
 		if ((r-l + 1) > BASECASE_SIZE)
 			return false;
 		return true;
 	}
+	
 
 	//return the number of subtrees
 	private int rootDegree(){

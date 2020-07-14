@@ -25,33 +25,54 @@ public class NaiveHeap extends Heap{
 		
 		heap[arrayIndex] = 1;
 
-		if (isEmpty() || x < findMin())
-			setMin(arrayIndex);
+		if (isEmpty() || x < findMin())	
+			setMinIndex(arrayIndex);
+		if(x > findMax())
+			setMax(x);
 		return true;
 	}
 	
 	@Override
-	public int deleteMin() {
-		heap[getMin()]=0;
-		int nextMin = getMin() + 1;
-		for (; nextMin<heap.length && heap[nextMin]==0;++nextMin); // this is closed loop. it will continue until one or both conditions can't be hold
-		if(nextMin==heap.length) // heap is empty
-			setMin(-1);
-		else{
-			setMin(nextMin);
-		}
-		return findMin();       // return the min value as real value by adding the left range
+	public void deleteMin() {
+		if (isEmpty())
+			return;
+		int nextMin = getMinIndex() ;
+		heap[nextMin]=0;
+		if (getMaxIndex()==getMinIndex())
+			setMaxIndex(-1);
+		setMinIndex(-1);
+		//closed loop: continue until one or both conditions can't be hold
+		for (++nextMin; nextMin<heap.length && heap[nextMin]==0;++nextMin); 
+		// heap is still not empty
+		if(nextMin!=heap.length){
+			setMinIndex(nextMin);
+			heap[nextMin]=0;
+		}else
+			setMinIndex(getMaxIndex());
+
 	}
 	
 	public void printContents(){
 		if (isEmpty())
 			return;
-		for (int i=getMin(); i < heap.length; ++i)
+		System.out.println(findMin());
+		for (int i=getMinIndex(); i < heap.length; ++i)
 			if (heap[i]==1)
 				System.out.println(getLeftEnd()+i);
 	}
 	
 	private boolean isFound(int index){
 		return heap[index] == 1;
+	}
+
+	@Override
+	public int findNext(int value) {
+		int valueIndex = getActualIndex(value);
+		int nextValueIdx = valueIndex + 1;
+		//closed loop: continue until one or both conditions can't be hold		
+		for(;nextValueIdx<heap.length && heap[nextValueIdx]==0;++nextValueIdx); 
+		if(nextValueIdx==heap.length) // nextValue does not exist in this heap
+			return -1;
+		return nextValueIdx + getLeftEnd();       
 	}
 }

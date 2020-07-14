@@ -4,21 +4,30 @@ package cs520.veb;
 // This class includes also abstract methods that have to be implemented in its child classes
 public abstract class Heap {
 	private int min;
+	private int max;
 	private int leftEnd;
 	private int	rightEnd;
 	
 	public 		abstract boolean 	insert(int x);
 	public 		abstract void 		printContents();
-	protected 	abstract int 		deleteMin();
+	protected 	abstract void 		deleteMin();
+	public 		abstract int 		findNext(int value);
 
 	protected Heap(int left, int right){
-		setMin (-1);
+		setMinIndex (-1);
+		setMaxIndex (-1);
 		setLeftEnd(left);
 		setRightEnd(right);
 	}
 
 	public void printSideHeap(){}
 	
+	protected boolean insertEmpty(int x){
+		setMin(x);
+		setMax(x);
+		return true;
+	}
+
 	public int extractMin() {
 		if (isEmpty())
 			return -1;
@@ -37,6 +46,10 @@ public abstract class Heap {
 	public int getActualIndex(int x) {
 		return x - getLeftEnd();
 	}
+	
+	public int getIndexValue(int index) {
+		return index + getLeftEnd();
+	}
 
 	protected boolean inRange(int i){
 		if (i < getLeftEnd() || i > getRightEnd())
@@ -50,17 +63,36 @@ public abstract class Heap {
 
 	// returns -1 if the heap is empty or the minimum value that is achieved by adding leftEnd to the value's array index
 	protected int findMin() {
-		return isEmpty()?getMin():  getMin() + getLeftEnd();
+		return isEmpty()?getMinIndex():  getIndexValue(getMinIndex());
+	}
+	protected void setMin(int val) {
+		this.min = getActualIndex(val);
+	}
+	
+	protected int findMax() {
+		return isEmpty()?-1:  getIndexValue(getMaxIndex());
+	}
+	
+	protected void setMax(int val) {
+		this.max = getActualIndex(val);
 	}
 
 	/*==========================================================
 	 * 		The following methods are set & get methods
 	 ==========================================================*/
-	protected int getMin() {
+	protected int getMaxIndex() {
+		return max;
+	}
+
+	protected void setMaxIndex(int max) {
+		this.max = max;
+	}
+
+	protected int getMinIndex() {
 		return min;
 	}
 
-	protected void setMin(int min) {
+	protected void setMinIndex(int min) {
 		this.min = min;
 	}
 
