@@ -44,7 +44,7 @@ public class NaiveHeap extends Heap{
 		//closed loop: continue until one or both conditions can't be hold
 		for (++nextMin; nextMin<heap.length && heap[nextMin]==0;++nextMin); 
 		// heap is still not empty
-		if(nextMin!=heap.length){
+		if(nextMin != heap.length){
 			setMinIndex(nextMin);
 			heap[nextMin]=0;
 		}else
@@ -56,8 +56,8 @@ public class NaiveHeap extends Heap{
 		if (isEmpty())
 			return;
 		System.out.println(findMin());
-		for (int i=getMinIndex(); i < heap.length; ++i)
-			if (heap[i]==1)
+		for (int i = getMinIndex(); i < heap.length; ++i)
+			if (heap[i] == 1)
 				System.out.println(getLeftEnd()+i);
 	}
 	
@@ -67,11 +67,11 @@ public class NaiveHeap extends Heap{
 
 	@Override
 	public int findNext(int value) {
-		int valueIndex = getActualIndex(value);
-		int nextValueIdx = valueIndex + 1;
+		int valueIndex 		= getActualIndex(value);
+		int nextValueIdx 	= valueIndex + 1;
 		//closed loop: continue until one or both conditions can't be hold		
-		for(;nextValueIdx<heap.length && heap[nextValueIdx]==0;++nextValueIdx); 
-		if(nextValueIdx==heap.length) // nextValue does not exist in this heap
+		for(;nextValueIdx < heap.length && heap[nextValueIdx] == 0; ++nextValueIdx); 
+		if(nextValueIdx == heap.length) // nextValue does not exist in this heap
 			return -1;
 		return nextValueIdx + getLeftEnd();       
 	}
