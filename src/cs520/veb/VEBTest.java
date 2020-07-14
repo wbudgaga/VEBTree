@@ -3,20 +3,18 @@ package cs520.veb;
 import java.util.Scanner;
 
 public class VEBTest {
-
 	public static void main(String args[]){
-	       Scanner Input = new Scanner(System.in);
+		Scanner Input 	= new Scanner(System.in);
 	        int leftEnd, rightEnd;
 	        System.out.print("Left end of the tree's range:  ");
-	        leftEnd = Input.nextInt();
+	        leftEnd 	= Input.nextInt();
 	        System.out.println(leftEnd);
 	        System.out.print("right of the tree's range:  ");
 	   
-	        rightEnd = Input.nextInt();
+	        rightEnd 	= Input.nextInt();
 	        System.out.println(rightEnd);
 	        
 	        VEBTree heap = new VEBTree(leftEnd, rightEnd);
-	//        NaiveHeap NH = new NaiveHeap(leftEnd, rightEnd);
 
 	        int choice; // menu option choice
 
