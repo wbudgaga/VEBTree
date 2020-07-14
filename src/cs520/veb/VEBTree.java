@@ -12,52 +12,52 @@ public class VEBTree extends Heap{
 	public VEBTree(int left, int right){
 		super(left,right);
 		int subtreeSize 	= subtreeRange(); 	// size   of subtrees 
-		int numberOfSubtrees= rootDegree();   	// number of subtrees
+		int numberOfSubtrees 	= rootDegree();   	// number of subtrees
 		// the heap and sideHeap can be VEBTree or Naive heap
 		if (isBaseCase(0,numberOfSubtrees-1))
-			sideHeap= new NaiveHeap(0,numberOfSubtrees-1);
+			sideHeap	= new NaiveHeap(0,numberOfSubtrees-1);
 		else
-			sideHeap= new VEBTree(0,numberOfSubtrees-1);
+			sideHeap	= new VEBTree(0,numberOfSubtrees-1);
 		
-		heap 		= new Heap[numberOfSubtrees];						
+		heap 			= new Heap[numberOfSubtrees];						
 			
 		// creating of child heaps
 		for (int i = 0; i < numberOfSubtrees ; ++i){
 			// calculate left range
-			int l 	= getLeftEnd() + i * subtreeSize; 	
+			int l 		= getLeftEnd() + i * subtreeSize; 	
 			// calculate right range
-			int r 	= (i == numberOfSubtrees -1)? getRightEnd(): 
+			int r 		= (i == numberOfSubtrees -1)? getRightEnd(): 
 						getLeftEnd() + (i+1) * subtreeSize - 1; 				
-			heap[i] = isBaseCase(l,r)? new NaiveHeap(l, r): new VEBTree(l,r);
+			heap[i] 	= isBaseCase(l,r)? new NaiveHeap(l, r): new VEBTree(l,r);
 		}
 	}
 	
 	private int swapMin(int newMin){
-		int oldMin = findMin();
+		int oldMin 		= findMin();
 		setMin(newMin);
 		return oldMin;
 	}
 	
 	@Override
 	public boolean insert(int x){
-		if (!inRange(x) || x== findMin())
+		if (!inRange(x) || x == findMin())
 			return false;
 		
 		if (isEmpty())
 			return insertEmpty(x);
 		
-		boolean result = false;
+		boolean result 		= false;
 		if (x < findMin())
 			x = swapMin(x);
 		
-		int bucketIndex = subtreeBucket(x);
+		int bucketIndex 	= subtreeBucket(x);
 		
 		if (heap[bucketIndex].isEmpty()){
 			sideHeap.insert(bucketIndex);
-			result = heap[bucketIndex].insertEmpty(x);
+			result 		= heap[bucketIndex].insertEmpty(x);
 		}else 
 			if (heap[bucketIndex].findMin()!= x)
-				result = heap[bucketIndex].insert(x);
+				result 	= heap[bucketIndex].insert(x);
 					
 		if (result && x>findMax())
 			setMax(x);
@@ -66,7 +66,7 @@ public class VEBTree extends Heap{
 	
 	@Override
 	public void deleteMin() {
-		if (getMinIndex()== getMaxIndex())
+		if (getMinIndex() == getMaxIndex())
 			setMaxIndex(-1);
 		setMinIndex(-1);
 		int firstNoneEmptyCluster = sideHeap.findMin();
@@ -93,10 +93,10 @@ public class VEBTree extends Heap{
 		if (value >= findMax())
 			return -1;
 		
-		int valueBucket = subtreeBucket(value);
+		int valueBucket 	= subtreeBucket(value);
 		
-		int minInHisBucket = heap[valueBucket].findMin();
-		int maxInHisBucket = heap[valueBucket].findMax();
+		int minInHisBucket 	= heap[valueBucket].findMin();
+		int maxInHisBucket 	= heap[valueBucket].findMax();
 		
 		if (value < minInHisBucket)
 			return minInHisBucket;
@@ -104,7 +104,7 @@ public class VEBTree extends Heap{
 		if (value < maxInHisBucket)
 			return  heap[valueBucket].findNext(value);	
 		else{
-			int nextBucket = sideHeap.findNext(valueBucket);
+			int nextBucket 	= sideHeap.findNext(valueBucket);
 			if (nextBucket!=-1)
 				return heap[nextBucket].findMin();
 			else
