@@ -3,10 +3,10 @@ package cs520.veb;
 // This class is a supper class of VEBTree and NaiveHeap. This class includes all shared data and methods of its subclasses
 // This class includes also abstract methods that have to be implemented in its child classes
 public abstract class Heap {
-	private int min;
-	private int max;
-	private int leftEnd;
-	private int	rightEnd;
+	private 	int min;
+	private 	int max;
+	private 	int leftEnd;
+	private 	int rightEnd;
 	
 	public 		abstract boolean 	insert(int x);
 	public 		abstract void 		printContents();
