@@ -101,7 +101,7 @@ public abstract class Heap {
 	}
 
 	protected void setLeftEnd(int leftEnd) {
-		this.leftEnd = leftEnd;
+		this.leftEnd 	= leftEnd;
 	}
 
 	protected int getRightEnd() {
@@ -109,6 +109,6 @@ public abstract class Heap {
 	}
 
 	protected void setRightEnd(int rightEnd) {
-		this.rightEnd = rightEnd;
+		this.rightEnd 	= rightEnd;
 	}	
 }
