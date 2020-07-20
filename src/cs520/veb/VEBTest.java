@@ -54,7 +54,7 @@ public class VEBTest {
 	                System.out.println ("Extracted item: " + heap.extractMin());
 	            else if (choice == 5){
 	            	System.out.print ("\n\nInteger to find next: ");
-	            	int value = Input.nextInt();
+	            	int value 	= Input.nextInt();
 	            	System.out.println(heap.findNext(value));
 	            }
 	            else if (choice == 6)
