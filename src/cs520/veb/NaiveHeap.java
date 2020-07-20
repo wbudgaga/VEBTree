@@ -5,7 +5,7 @@ public class NaiveHeap extends Heap{
 
 	public NaiveHeap(int left, int right){
 		super(left,right);
-		heap = new int[getSize()];
+		heap 			= new int[getSize()];
 	}
 	
 	protected int get(int i){
@@ -19,11 +19,11 @@ public class NaiveHeap extends Heap{
 		if (!inRange(x))
 			return false;
 
-		int arrayIndex = getActualIndex(x);
+		int arrayIndex 		= getActualIndex(x);
 		if (isFound(arrayIndex)) // if already there return false
 			return false;
 		
-		heap[arrayIndex] = 1;
+		heap[arrayIndex]	= 1;
 
 		if (isEmpty() || x < findMin())	
 			setMinIndex(arrayIndex);
