@@ -38,7 +38,7 @@ public class NaiveHeap extends Heap{
 			return;
 		int nextMin 		= getMinIndex() ;
 		heap[nextMin]		= 0;
-		if (getMaxIndex()==getMinIndex())
+		if (getMaxIndex() == getMinIndex())
 			setMaxIndex(-1);
 		setMinIndex(-1);
 		//closed loop: continue until one or both conditions can't be hold
@@ -46,7 +46,7 @@ public class NaiveHeap extends Heap{
 		// heap is still not empty
 		if(nextMin != heap.length){
 			setMinIndex(nextMin);
-			heap[nextMin]=0;
+			heap[nextMin]	= 0;
 		}else
 			setMinIndex(getMaxIndex());
 
