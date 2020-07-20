@@ -75,7 +75,7 @@ public class VEBTree extends Heap{
 			return;
 		}
 		setMin(heap[firstNoneEmptyCluster].findMin());
-		//If heap becomes empty after deleteMin then this recurrence takes O(1)
+		//If heap becomes empty after deleteMin, then this recurrence takes O(1)
 		heap[firstNoneEmptyCluster].deleteMin();
 
 		//The second recurrence is executed only if the cluster becomes empty,
@@ -105,7 +105,7 @@ public class VEBTree extends Heap{
 			return  heap[valueBucket].findNext(value);	
 		else{
 			int nextBucket 	= sideHeap.findNext(valueBucket);
-			if (nextBucket!=-1)
+			if (nextBucket != -1)
 				return heap[nextBucket].findMin();
 			else
 				return findMax();
@@ -116,12 +116,11 @@ public class VEBTree extends Heap{
 	public void printSideHeap(){
 		if (isEmpty())
 			return;
-		int i = subtreeBucket(findMin());
+		int i 			= subtreeBucket(findMin());
 		System.out.println(i);
 		for (++i; i < rootDegree() && i!=-1; ++i)
 			if (!heap[i].isEmpty())
 				System.out.println(i);
-
 	}
 		
 	public void printContents(){
@@ -146,7 +145,7 @@ public class VEBTree extends Heap{
 
 	// return the size of subtrees
 	private int subtreeRange(){
-		return (int) Math.sqrt(getRightEnd() -getLeftEnd() + 1.0);
+		return (int) Math.sqrt(getRightEnd() - getLeftEnd() + 1.0);
 	}
 	
 	// returns the bucket index where i can be stored
