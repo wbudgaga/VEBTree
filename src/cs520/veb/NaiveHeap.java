@@ -36,8 +36,8 @@ public class NaiveHeap extends Heap{
 	public void deleteMin() {
 		if (isEmpty())
 			return;
-		int nextMin = getMinIndex() ;
-		heap[nextMin]=0;
+		int nextMin 		= getMinIndex() ;
+		heap[nextMin]		= 0;
 		if (getMaxIndex()==getMinIndex())
 			setMaxIndex(-1);
 		setMinIndex(-1);
