@@ -31,7 +31,7 @@ public abstract class Heap {
 	public int extractMin() {
 		if (isEmpty())
 			return -1;
-		int minimum = findMin();
+		int minimum 	= findMin();
 		deleteMin();
 		return minimum;
 	}
@@ -63,18 +63,18 @@ public abstract class Heap {
 
 	// returns -1 if the heap is empty or the minimum value that is achieved by adding leftEnd to the value's array index
 	protected int findMin() {
-		return isEmpty()?getMinIndex():  getIndexValue(getMinIndex());
+		return isEmpty()? getMinIndex():  getIndexValue(getMinIndex());
 	}
 	protected void setMin(int val) {
-		this.min = getActualIndex(val);
+		this.min 	= getActualIndex(val);
 	}
 	
 	protected int findMax() {
-		return isEmpty()?-1:  getIndexValue(getMaxIndex());
+		return isEmpty()? -1:  getIndexValue(getMaxIndex());
 	}
 	
 	protected void setMax(int val) {
-		this.max = getActualIndex(val);
+		this.max 	= getActualIndex(val);
 	}
 
 	/*==========================================================
