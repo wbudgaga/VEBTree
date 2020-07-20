@@ -58,7 +58,7 @@ public class NaiveHeap extends Heap{
 		System.out.println(findMin());
 		for (int i = getMinIndex(); i < heap.length; ++i)
 			if (heap[i] == 1)
-				System.out.println(getLeftEnd()+i);
+				System.out.println(getLeftEnd() + i);
 	}
 	
 	private boolean isFound(int index){
