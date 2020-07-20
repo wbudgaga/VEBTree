@@ -150,6 +150,6 @@ public class VEBTree extends Heap{
 	
 	// returns the bucket index where i can be stored
 	private int subtreeBucket(int i){
-		return (i-getLeftEnd())/subtreeRange();
+		return (i-getLeftEnd()) / subtreeRange();
 	}
 }
