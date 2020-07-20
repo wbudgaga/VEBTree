@@ -14,7 +14,7 @@ public class VEBTree extends Heap{
 		int subtreeSize 	= subtreeRange(); 	// size   of subtrees 
 		int numberOfSubtrees 	= rootDegree();   	// number of subtrees
 		// the heap and sideHeap can be VEBTree or Naive heap
-		if (isBaseCase(0,numberOfSubtrees-1))
+		if (isBaseCase(0, numberOfSubtrees-1))
 			sideHeap	= new NaiveHeap(0,numberOfSubtrees-1);
 		else
 			sideHeap	= new VEBTree(0,numberOfSubtrees-1);
@@ -59,7 +59,7 @@ public class VEBTree extends Heap{
 			if (heap[bucketIndex].findMin()!= x)
 				result 	= heap[bucketIndex].insert(x);
 					
-		if (result && x>findMax())
+		if (result && x > findMax())
 			setMax(x);
 		return result;
 	}
