@@ -85,7 +85,7 @@ public abstract class Heap {
 	}
 
 	protected void setMaxIndex(int max) {
-		this.max = max;
+		this.max 	= max;
 	}
 
 	protected int getMinIndex() {
@@ -93,7 +93,7 @@ public abstract class Heap {
 	}
 
 	protected void setMinIndex(int min) {
-		this.min = min;
+		this.min 	= min;
 	}
 
 	protected int getLeftEnd() {
